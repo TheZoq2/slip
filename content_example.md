@@ -1,10 +1,10 @@
----
+--
 
 # Slide 1
 
 
 
----
+--
 //layout: two-column
 
 ### Slide 2
@@ -22,7 +22,7 @@ def some code
 
 
 
----
+--
 
 ### Slide 3
 
