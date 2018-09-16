@@ -22,19 +22,61 @@ data Layout
     = Default
     | TwoColumns
 
-data Line = Line
-    { file:: Text.Text
-    , number:: Int
-    , content:: Text.Text
+data Line a = Line
+    { lineFile:: Text.Text
+    , lineNumber:: Int
+    , lineContent:: a
     }
 type Variable = (Text.Text, Text.Text)
-type Slide = [Line]
+type Slide = [Line Text.Text]
 
-{--data SlideWithParameters = SlideWithParameters
-    { content:: Slide
-    , layout:: Layout
+
+data SlideWithParameters = SlideWithParameters
+    { slideContent:: Slide
+    , slideLayout:: Layout
     }
-    --}
+
+
+type Error a = Eiter a Text.Teat
+
+
+
+makeError :: Line a -> Text.Text -> Text.Text
+makeError line err =
+    Text.concat
+        [ "Error at "
+        , lineFile line
+        , ":"
+        , Text.pack $ show $ lineNumber line
+        , "\n\t"
+        , err
+        ]
+
+
+{-
+  Applies a transformation to the specified line without mangling line numbers
+-}
+transformLine :: (a -> b) -> Line a -> Line b
+transformLine fn line =
+    Line (lineFile line) (lineNumber line) $ fn $ lineContent line
+
+
+
+
+getVariable :: Line Data.Text -> Error (Either (Line Text.Text) (Line Variable))
+getVariable line =
+    let
+        parseVariable line =
+
+    in
+    case Text.take 1 line of
+        "$" ->
+            parseVariable $ drop 1 line
+        _ -> Left line
+
+
+
+
 
 
 removeWhitespace :: Text.Text -> Text.Text
@@ -52,8 +94,8 @@ removeWhitespace t =
 splitSlides :: Text.Text -> [Text.Text] -> [Slide]
 splitSlides fileName fileContent =
     let
-        foldFn :: Line -> [[Line]] -> [[Line]]
-        foldFn Line{content = "--"} acc = [[]] ++ acc
+        foldFn :: Line Text.Text -> [[Line Text.Text]] -> [[Line Text.Text]]
+        foldFn Line{lineContent = "--"} acc = [[]] ++ acc
         foldFn line (current: rest) = ((current ++ [line]): rest)
     in
         foldr foldFn [[]]
@@ -66,7 +108,7 @@ splitSlides fileName fileContent =
 -- Re-merging the slides
 slideToString :: Slide -> Text.Text
 slideToString lines =
-    Text.intercalate "\n" $ fmap content lines
+    Text.intercalate "\n" $ fmap lineContent lines
 
 mergeSlides :: [Slide] -> Text.Text
 mergeSlides slides =
