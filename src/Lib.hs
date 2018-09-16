@@ -22,13 +22,19 @@ data Layout
     = Default
     | TwoColumns
 
-type Template = [Text.Text]
+data Line = Line
+    { file:: Text.Text
+    , number:: Int
+    , content:: Text.Text
+    }
 type Variable = (Text.Text, Text.Text)
-type Slide = [Text.Text]
-data SlideWithParameters = SlideWithParameters
+type Slide = [Line]
+
+{--data SlideWithParameters = SlideWithParameters
     { content:: Slide
     , layout:: Layout
     }
+    --}
 
 
 removeWhitespace :: Text.Text -> Text.Text
@@ -43,33 +49,24 @@ removeWhitespace t =
     Splits a list of lines into multiple lists of lines
     corresponding to different slides
 ---}
-splitSlides :: [Text.Text] -> [Slide]
-splitSlides file =
+splitSlides :: Text.Text -> [Text.Text] -> [Slide]
+splitSlides fileName fileContent =
     let
-        foldFn :: Text.Text -> [[Text.Text]] -> [[Text.Text]]
-        foldFn "--" acc = [[]] ++ acc
+        foldFn :: Line -> [[Line]] -> [[Line]]
+        foldFn Line{content = "--"} acc = [[]] ++ acc
         foldFn line (current: rest) = ((current ++ [line]): rest)
     in
-        foldr foldFn [[]] file
+        foldr foldFn [[]]
+            $ fmap (\(num, line) -> Line fileName num line)
+            $ zip (iterate (+1) 1) fileContent
 
-
-{--
---}
-readParameters :: Slide -> SlideWithParameters
-readParameters slide =
-    let
-        foldFn acc line =
-            Text.splitOn "="
-                $ removeWhitespace line
-    in
-    foldr 
 
 
 
 -- Re-merging the slides
 slideToString :: Slide -> Text.Text
 slideToString lines =
-    Text.intercalate "\n" lines
+    Text.intercalate "\n" $ fmap content lines
 
 mergeSlides :: [Slide] -> Text.Text
 mergeSlides slides =

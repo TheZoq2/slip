@@ -15,4 +15,4 @@ main :: IO ()
 main = do
     content <- IO.readFile "content_example.md"
     let contentLines = Text.lines content
-    IO.putStrLn $ mergeSlides $ splitSlides contentLines
+    IO.putStrLn $ mergeSlides $ splitSlides "content_example.md" contentLines
