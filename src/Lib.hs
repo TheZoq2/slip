@@ -14,6 +14,7 @@ import qualified System.Environment as Environment
 import qualified System.Process as Process
 import qualified System.IO.Error as Error
 import Data.List (concat, intersperse)
+import Animation
 
 slideSeparator :: Text.Text
 slideSeparator = "--"
@@ -26,7 +27,8 @@ data Line a = Line
     { lineFile:: Text.Text
     , lineNumber:: Int
     , lineContent:: a
-    }
+    } deriving Show
+
 type Variable = (Text.Text, Text.Text)
 type Slide = [Line Text.Text]
 
@@ -37,7 +39,7 @@ data SlideWithParameters = SlideWithParameters
     }
 
 
-type Error a = Eiter a Text.Teat
+type Error a = Either a Text.Text
 
 
 
@@ -63,19 +65,6 @@ transformLine fn line =
 
 
 
-getVariable :: Line Data.Text -> Error (Either (Line Text.Text) (Line Variable))
-getVariable line =
-    let
-        parseVariable line =
-
-    in
-    case Text.take 1 line of
-        "$" ->
-            parseVariable $ drop 1 line
-        _ -> Left line
-
-
-
 
 
 
@@ -94,13 +83,12 @@ removeWhitespace t =
 splitSlides :: Text.Text -> [Text.Text] -> [Slide]
 splitSlides fileName fileContent =
     let
-        foldFn :: Line Text.Text -> [[Line Text.Text]] -> [[Line Text.Text]]
-        foldFn Line{lineContent = "--"} acc = [[]] ++ acc
-        foldFn line (current: rest) = ((current ++ [line]): rest)
+        foldFn :: Line Text.Text -> [Slide] ->  [Slide]
+        foldFn Line{lineContent = "--"} acc = []: acc
+        foldFn line (current: rest) = ((line: current): rest)
     in
         foldr foldFn [[]]
-            $ fmap (\(num, line) -> Line fileName num line)
-            $ zip (iterate (+1) 1) fileContent
+            $ zipWith (Line fileName) [1..] fileContent
 
 
 
