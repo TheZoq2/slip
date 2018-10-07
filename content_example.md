@@ -26,7 +26,14 @@ def some code
 
 ### Slide 3
 
-[[(animatedList)
+[[(animated)
+>>
 - First point
+>>
 - Second point
+  - subpoint
+>>
+  - subpoint 2
+>>
+- another point
 ]]

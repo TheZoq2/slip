@@ -5,6 +5,7 @@ module Lib
     , splitSlides
     , slideToString
     , mergeSlides
+    , unsafeAnimateSlides
     ) where
 
 import Data.Foldable (for_)
@@ -13,46 +14,22 @@ import qualified Data.Maybe as Maybe
 import qualified System.Environment as Environment
 import qualified System.Process as Process
 import qualified System.IO.Error as Error
+import qualified Data.Either as Either
 import Data.List (concat, intersperse)
+import Types
+    ( Layout
+    , Line(..)
+    , Variable
+    , Slide
+    , SlideWithParameters
+    )
 import Animation
 
 slideSeparator :: Text.Text
 slideSeparator = "--"
 
-data Layout
-    = Default
-    | TwoColumns
-
-data Line a = Line
-    { lineFile:: Text.Text
-    , lineNumber:: Int
-    , lineContent:: a
-    } deriving Show
-
-type Variable = (Text.Text, Text.Text)
-type Slide = [Line Text.Text]
 
 
-data SlideWithParameters = SlideWithParameters
-    { slideContent:: Slide
-    , slideLayout:: Layout
-    }
-
-
-type Error a = Either a Text.Text
-
-
-
-makeError :: Line a -> Text.Text -> Text.Text
-makeError line err =
-    Text.concat
-        [ "Error at "
-        , lineFile line
-        , ":"
-        , Text.pack $ show $ lineNumber line
-        , "\n\t"
-        , err
-        ]
 
 
 {-
@@ -79,7 +56,7 @@ removeWhitespace t =
 {--
     Splits a list of lines into multiple lists of lines
     corresponding to different slides
----}
+--}
 splitSlides :: Text.Text -> [Text.Text] -> [Slide]
 splitSlides fileName fileContent =
     let
@@ -92,13 +69,23 @@ splitSlides fileName fileContent =
 
 
 
+unsafeAnimateSlides :: [Slide] -> [Slide]
+unsafeAnimateSlides slides =
+    let
+        animated = fmap (\slide -> Either.fromRight [slide] $ animateSlide slide) slides
+    in
+        concat animated
+
 
 -- Re-merging the slides
 slideToString :: Slide -> Text.Text
 slideToString lines =
     Text.intercalate "\n" $ fmap lineContent lines
 
+
+
+
 mergeSlides :: [Slide] -> Text.Text
 mergeSlides slides =
-    Text.intercalate (Text.append "newslide\n" slideSeparator)
+    Text.intercalate (Text.append "\n" slideSeparator)
         $ fmap slideToString slides

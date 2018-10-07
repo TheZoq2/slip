@@ -5,6 +5,7 @@ import Lib
     , splitSlides
     , slideToString
     , mergeSlides
+    , unsafeAnimateSlides
     )
 
 import qualified Data.Text as Text
@@ -15,4 +16,4 @@ main :: IO ()
 main = do
     content <- IO.readFile "content_example.md"
     let contentLines = Text.lines content
-    IO.putStrLn $ mergeSlides $ splitSlides "content_example.md" contentLines
+    IO.putStrLn $ mergeSlides $ unsafeAnimateSlides $ splitSlides "content_example.md" contentLines
