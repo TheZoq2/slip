@@ -66,9 +66,9 @@ extractAnimated :: Slide -> Error (Maybe ([TextLine], [TextLine], [TextLine]))
 extractAnimated slide =
     let
         (before, rest) = List.break (lineSatisfies (== "[[(animated)")) slide
-        (animated, rest') = List.break (lineSatisfies (== "]]")) rest
+        (animated, rest') = List.break (lineSatisfies (== "]]")) $ List.drop 1 rest
     in
-        case (before, animated, rest) of
+        case (before, animated, rest') of
             (before, [], []) -> Right Nothing
             (before, (firstAnimated:_), []) ->
                 Left
