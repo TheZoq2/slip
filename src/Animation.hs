@@ -73,7 +73,7 @@ extractAnimated slide =
             (before, (firstAnimated:_), []) ->
                 Left
                     $ makeError firstAnimated "Unclosed [[(animatedSection) above line"
-            other -> Right $ Just other
+            (before, animated, rest) -> Right $ Just (before, animated, List.drop 1 rest)
 
 
 

@@ -37,3 +37,26 @@ def some code
 >>
 - another point
 ]]
+
+
+
+--
+
+### Din mamma
+
+[[(animated)
+>>
+- Väger massor
+>>
+- Luktar konstigt
+
+>>
+## Vikten
+
+>>
+Väldigt hög
+
+>>
+Matematiskt oändlig - Albert Einstein
+
+]]
