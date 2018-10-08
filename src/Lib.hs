@@ -5,7 +5,7 @@ module Lib
     , splitSlides
     , slideToString
     , mergeSlides
-    , unsafeAnimateSlides
+    , animateSlides
     ) where
 
 import Data.Foldable (for_)
@@ -24,6 +24,7 @@ import Types
     , SlideWithParameters
     )
 import Animation
+import Error
 
 slideSeparator :: Text.Text
 slideSeparator = "--"
@@ -69,12 +70,12 @@ splitSlides fileName fileContent =
 
 
 
-unsafeAnimateSlides :: [Slide] -> [Slide]
-unsafeAnimateSlides slides =
+animateSlides :: [Slide] -> Error [Slide]
+animateSlides slides =
     let
-        animated = fmap (\slide -> Either.fromRight [slide] $ animateSlide slide) slides
+        animated = traverse animateSlide slides
     in
-        concat animated
+        fmap concat animated
 
 
 -- Re-merging the slides
@@ -89,3 +90,12 @@ mergeSlides :: [Slide] -> Text.Text
 mergeSlides slides =
     Text.intercalate (Text.append "\n" slideSeparator)
         $ fmap slideToString slides
+
+
+
+
+type SlidePlaceholder
+    = Slide
+    | Placeholder
+
+findIncludes :: 
