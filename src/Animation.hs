@@ -3,11 +3,13 @@
 module Animation (extractAnimatedChunks, animateSlide) where
 
 import qualified Data.List as List
+import qualified Data.Text as Text
 
 import Types
     ( Layout
     , Line(..)
     , lineSatisfies
+    , mapLine
     , TextLine
     , Variable
     , Slide
@@ -77,4 +79,30 @@ extractAnimated slide =
 
 
 
+data ExtractionState
+    -- Not inside a section
+    = NoSection
+    -- Inside a section that started on line <0> with current frame <1>
+    | InSection (Line ()) Int
 
+type AnimatedSection = Line (Int, Text.Text)
+
+extractAnimatedSections :: Slide -> Error [AnimatedSection]
+extractAnimatedSections slide =
+    let
+        section line frame content = mapLine (\_ -> (frame, content)) line
+
+        inner :: Slide -> ExtractionState -> [AnimatedSection] -> Error [AnimatedSection]
+        inner [] NoSection partial = Right partial
+        inner [] (InSection start _) _ =
+            Left $ makeError start $
+                "Found end of animation chunk, expected end of animation frame"
+        inner (current:rest) state partial =
+            case state of
+                NoSection ->
+                    case Text.breakOn ">-" $ lineContent current of
+                        (stringOnly, "") ->
+                            inner (rest) NoSection (partial ++ [section current 0 stringOnly])
+
+    in
+        inner slide NoSection []

@@ -62,3 +62,36 @@ Matematiskt oändlig - Albert Einstein
 ]]
 
 
+--
+
+[[(animated)
+>-Some code |2: New version -<
+```python
+def hello world(>-|1:name-<):
+    print("Hello >-World"|1:" + name-<)
+    >-3:multiline_thing = [
+        1,
+        2,
+        3,
+    ]|4:multiline_thing = (
+        3,
+        2,
+        1
+    )-<
+```
+]]
+
+
+--
+
+[[(animated)
+- Some statement >-|1:true-<
+>>
+- Your mom is not fat >-|2:false-<
+>>
+- Yolo >-|3:true-<
+>>
+]]
+
+
+--

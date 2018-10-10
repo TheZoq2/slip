@@ -2,6 +2,7 @@ module Types
     ( Layout
     , Line(..)
     , lineSatisfies
+    , mapLine
     , Variable
     , TextLine
     , Slide
@@ -25,6 +26,11 @@ data Line a = Line
 lineSatisfies :: (a -> Bool) -> Line a -> Bool
 lineSatisfies pred line = 
     pred $ lineContent line
+
+
+mapLine :: (a -> b) -> Line a -> Line b
+mapLine fun line =
+    line {lineContent = fun $ lineContent line}
 
 
 type TextLine = Line Text.Text

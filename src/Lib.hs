@@ -54,6 +54,7 @@ removeWhitespace t =
 
 
 
+
 {--
     Splits a list of lines into multiple lists of lines
     corresponding to different slides
@@ -93,9 +94,3 @@ mergeSlides slides =
 
 
 
-
-type SlidePlaceholder
-    = Slide
-    | Placeholder
-
-findIncludes :: 

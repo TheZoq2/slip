@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 108e2cd33a028c891ee3c3190ce24025e1f2195b018acb80ce5db8d1f819788c
+-- hash: 6d6caf594331091a4d493890c59303e6dfb5dc4ca3307e1b9e5dbc6c3385f091
 
 name:           slip
 version:        0.1.0.0
@@ -26,8 +26,6 @@ source-repository head
   location: https://github.com/githubuser/slip
 
 library
-  extensions:
-      OverloadedStrings
   exposed-modules:
       Animation
       Error
@@ -35,9 +33,9 @@ library
       Types
   other-modules:
       Paths_slip
-      Includes
   hs-source-dirs:
       src
+  default-extensions: OverloadedStrings
   build-depends:
       base >=4.7 && <5
     , process
