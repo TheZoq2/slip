@@ -1,20 +1,13 @@
 module Types
-    ( Layout
-    , Line(..)
+    ( Line(..)
     , lineSatisfies
     , mapLine
     , Variable
     , TextLine
     , Slide
-    , SlideWithParameters
     ) where
 
 import qualified Data.Text as Text
-
-data Layout
-    = Default
-    | TwoColumns
-
 
 data Line a = Line
     { lineFile:: Text.Text
@@ -39,11 +32,6 @@ type TextLine = Line Text.Text
 type Variable = (Text.Text, Text.Text)
 type Slide = [Line Text.Text]
 
-
-data SlideWithParameters = SlideWithParameters
-    { slideContent:: Slide
-    , slideLayout:: Layout
-    }
 
 
 

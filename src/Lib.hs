@@ -17,11 +17,9 @@ import qualified System.IO.Error as Error
 import qualified Data.Either as Either
 import Data.List (concat, intersperse)
 import Types
-    ( Layout
-    , Line(..)
+    ( Line(..)
     , Variable
     , Slide
-    , SlideWithParameters
     )
 import Animation
 import Error

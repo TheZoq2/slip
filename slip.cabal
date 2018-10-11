@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 6d6caf594331091a4d493890c59303e6dfb5dc4ca3307e1b9e5dbc6c3385f091
+-- hash: 62a8592432cf7fbd74f319cc2f759ec541240e286d8a5f784bac55d6e2ecc26e
 
 name:           slip
 version:        0.1.0.0
@@ -15,7 +15,6 @@ author:         Author name here
 maintainer:     example@example.com
 copyright:      2018 Author name here
 license:        BSD3
-license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md

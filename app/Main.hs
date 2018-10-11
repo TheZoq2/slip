@@ -1,9 +1,7 @@
 {-# Language OverloadedStrings #-}
 
 import Lib
-    ( slideSeparator
-    , splitSlides
-    , slideToString
+    ( splitSlides
     , mergeSlides
     , animateSlides
     )

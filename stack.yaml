@@ -63,3 +63,12 @@ extra-deps: []
 #
 # Allow a newer minor version of GHC than the snapshot specifies
 # compiler-check: newer-minor
+
+ghc-options:
+  "$locals": -W
+
+apply-ghc-options:
+    locals
+
+rebuild-ghc-options:
+    true

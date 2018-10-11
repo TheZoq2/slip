@@ -6,14 +6,11 @@ import qualified Data.List as List
 import qualified Data.Text as Text
 
 import Types
-    ( Layout
-    , Line(..)
+    ( Line(..)
     , lineSatisfies
     , mapLine
     , TextLine
-    , Variable
     , Slide
-    , SlideWithParameters
     )
 
 import Error
@@ -21,9 +18,6 @@ import Error
     , Error
     )
 
-
-
-type AnimatedChunk = [TextLine]
 
 
 
@@ -42,14 +36,14 @@ doAnimation before animated rest =
     let
         animContent = buildTriangle $ extractAnimatedChunks animated
     in
-        fmap (\animContent -> before ++ animContent ++ rest) animContent
+        fmap (\content -> before ++ content ++ rest) animContent
 
 
 extractAnimatedChunks :: [TextLine] -> [[TextLine]]
 extractAnimatedChunks [] = []
-extractAnimatedChunks lines =
+extractAnimatedChunks textLines =
     let
-        (first, rest) = List.break (lineSatisfies (== ">>")) lines
+        (first, rest) = List.break (lineSatisfies (== ">>")) textLines
     in
         -- drop 1 because break adds the element to the list
         [first] ++ (extractAnimatedChunks $ List.drop 1 $ rest)
@@ -57,8 +51,9 @@ extractAnimatedChunks lines =
 
 
 buildTriangle :: [[a]] -> [[a]]
-buildTriangle (head:rest) =
-    List.scanl (++) head rest
+buildTriangle [] = []
+buildTriangle (first:rest) =
+    List.scanl (++) first rest
 
 
 {-
@@ -71,11 +66,11 @@ extractAnimated slide =
         (animated, rest') = List.break (lineSatisfies (== "]]")) $ List.drop 1 rest
     in
         case (before, animated, rest') of
-            (before, [], []) -> Right Nothing
-            (before, (firstAnimated:_), []) ->
+            (_before, [], []) -> Right Nothing
+            (_before, (firstAnimated:_), []) ->
                 Left
                     $ makeError firstAnimated "Unclosed [[(animatedSection) above line"
-            (before, animated, rest) -> Right $ Just (before, animated, List.drop 1 rest)
+            (before', animated', rest'') -> Right $ Just (before', animated', List.drop 1 rest'')
 
 
 
