@@ -94,8 +94,8 @@ mergeSlides slides =
 
 
 
-type SlidePlaceholder
-    = Slide
-    | Placeholder
-
-findIncludes :: 
+-- type SlidePlaceholder
+--     = Slide
+--     | Placeholder
+-- 
+-- findIncludes :: 
