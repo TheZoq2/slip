@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.31.0.
+-- This file has been generated from package.yaml by hpack version 0.31.1.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 108e2cd33a028c891ee3c3190ce24025e1f2195b018acb80ce5db8d1f819788c
+-- hash: 6e796350b0a0ae3e449e7f9b149fb56475a8dda0732d1f87f7aad0f778d84b01
 
 name:           slip
 version:        0.1.0.0
@@ -15,7 +15,6 @@ author:         Author name here
 maintainer:     example@example.com
 copyright:      2018 Author name here
 license:        BSD3
-license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
     README.md
@@ -26,8 +25,6 @@ source-repository head
   location: https://github.com/githubuser/slip
 
 library
-  extensions:
-      OverloadedStrings
   exposed-modules:
       Animation
       Error
@@ -35,7 +32,6 @@ library
       Types
   other-modules:
       Paths_slip
-      Includes
   hs-source-dirs:
       src
   build-depends:
