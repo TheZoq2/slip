@@ -16,6 +16,6 @@ import qualified Data.Text.IO as IO
 
 main :: IO ()
 main = do
-    content <- IO.readFile "content_example.md"
+    content <- IO.readFile "slip_input.md"
     let contentLines = Text.lines content
     IO.putStrLn $ either id mergeSlides $ animateSlides $ splitSlides "content_example.md" contentLines
